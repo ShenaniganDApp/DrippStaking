@@ -4,7 +4,7 @@ __pycache__/
 .DS_Store
 .cache
 .pytest_cache/
-env/
+mnemonic.txt
 vyper/
 __init__.py
 
