@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.cache
+.pytest_cache/
+env/
+vyper/
+__init__.py
+
+node_modules
+
+#Hardhat files
+cache
+artifacts
