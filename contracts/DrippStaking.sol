@@ -185,29 +185,38 @@ contract DrippStaking is Ownable {
         drippToken.transfer(msg.sender, account.rewards[token]);
     }
 
-    function accountTokenStaked(address token, address _account) external view returns(uint256) {
-        Account storage account = accounts[_account];
-        return account.tokensStaked[token];
+    function accountTokenStaked(address token, address _account)
+        external
+        view
+        returns (uint256)
+    {
+        return accounts[_account].tokensStaked[token];
     }
 
-    function accountLPStaked(address token, address _account) external view returns(uint256) {
-        Account storage account = accounts[_account];
-        return account.liquidityTokensStaked[token];
+    function accountLPStaked(address token, address _account)
+        external
+        view
+        returns (uint256)
+    {
+        return accounts[_account].liquidityTokensStaked[token];
     }
 
-    function accountRewards(address token, address _account) external view returns(uint256) {
-        Account storage account = accounts[_account];
-        return account.rewards[token];
+    function accountRewards(address token, address _account)
+        external
+        view
+        returns (uint256)
+    {
+        return accounts[_account].rewards[token];
     }
 
-    function totalStaked(address token) external view returns(uint256) {
+    function totalStaked(address token) external view returns (uint256) {
         return totalTokenStaked[token];
     }
 
     /*
      *@notice get rewards for each dripp token
      */
-    function totalRewarded(address token) external view returns(uint256) {
+    function totalRewarded(address token) external view returns (uint256) {
         return totalRewards[token];
     }
 }

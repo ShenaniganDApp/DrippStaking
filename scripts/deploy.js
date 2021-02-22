@@ -9,8 +9,8 @@ const main = async () => {
 	console.log('\n\n 📡 Deploying...\n');
 
 	// const shweatpantsERC20 = await deploy('ShweatpantsToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
-	const agaaveERC20 = await deploy('AlvinToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
-	// const drippStaking = await deploy('DrippStaking'); // <-- add in constructor args like line 19 vvvv
+	// const agaaveERC20 = await deploy('AlvinToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
+	const drippStaking = await deploy('DrippStaking'); // <-- add in constructor args like line 19 vvvv
 
 	//const secondContract = await deploy("SecondContract")
 
