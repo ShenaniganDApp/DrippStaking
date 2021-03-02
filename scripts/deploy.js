@@ -9,8 +9,15 @@ const main = async () => {
 	console.log('\n\n 📡 Deploying...\n');
 
 	// const shweatpantsERC20 = await deploy('ShweatpantsToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
+	// const shweatpantsERC20 = await deploy('TestpantsToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
 	// const agaaveERC20 = await deploy('AlvinToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
-	const drippStaking = await deploy('DrippStaking'); // <-- add in constructor args like line 19 vvvv
+	const drippStaking = await deploy('DrippStaking', [
+		['0x898e8897437d7245a2d09a29b2cd06a2c1ca388b', '0x3008Ff3e688346350b0C07B8265d256dddD97215'],
+		['0xb5d592f85ab2d955c25720ebe6ff8d4d1e1be300', '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9'],
+		['0xaaefc56e97624b57ce98374eb4a45b6fd5ffb982', '0xaaefc56e97624b57ce98374eb4a45b6fd5ffb982'],
+		[2592000, 2592000],
+		["50000000000000000000", "50000000000000000000"],
+	]); // <-- add in constructor args like line 19 vvvv
 
 	//const secondContract = await deploy("SecondContract")
 
