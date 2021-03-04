@@ -12,12 +12,23 @@ const main = async () => {
 	// const shweatpantsERC20 = await deploy('TestpantsToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
 	// const agaaveERC20 = await deploy('AlvinToken', [BigNumber.from('100000000000000000000')]); // <-- add in constructor args like line 19 vvvv
 	const drippStaking = await deploy('DrippStaking', [
-		['0x898e8897437d7245a2d09a29b2cd06a2c1ca388b', '0x3008Ff3e688346350b0C07B8265d256dddD97215'],
+		['0x11C9F4c3E960CCe4464E25a9fA5414Ab72fc45EA', '0x50DBde932A94b0c23D27cdd30Fbc6B987610c831'],
 		['0xb5d592f85ab2d955c25720ebe6ff8d4d1e1be300', '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9'],
 		['0xaaefc56e97624b57ce98374eb4a45b6fd5ffb982', '0xaaefc56e97624b57ce98374eb4a45b6fd5ffb982'],
 		[2592000, 2592000],
 		["50000000000000000000", "50000000000000000000"],
 	]); // <-- add in constructor args like line 19 vvvv
+
+	// const shweatpantsMigrate = await deploy('ERC20Migrator',["0x73C6927063338170D794DC929253edb09f533B8d"])
+	// const alvinMigrate = await deploy('ERC20Migrator', ['0xf9bb1049378A3462E61Bba502530e5Ed62469925']);
+	// const alvinERC20V3 = await deploy('AlvinV3Token', [
+	// 	'50000000000000000000',
+	// 	'0x70520F7f6a4978952bA9AA33c5Ce09B9De30Ea5f',
+	// ]);
+	// const shweatpantsERC20V3 = await deploy('ShweatpantsV3Token', [
+	// 	'50000000000000000000',
+	// 	'0x29f1C823Ca7ABb894D452796140eC80011cc5612',
+	// ]);
 
 	//const secondContract = await deploy("SecondContract")
 

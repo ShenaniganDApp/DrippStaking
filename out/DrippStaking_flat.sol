@@ -499,18 +499,236 @@ abstract contract Ownable is Context {
     }
 }
 
+
+
+
+// CAUTION
+// This version of SafeMath should only be used with Solidity 0.8 or later,
+// because it relies on the compiler's built in overflow checks.
+
+/**
+ * @dev Wrappers over Solidity's arithmetic operations.
+ *
+ * NOTE: `SafeMath` is no longer needed starting with Solidity 0.8. The compiler
+ * now has built in overflow checking.
+ */
+library SafeMath {
+    /**
+     * @dev Returns the addition of two unsigned integers, with an overflow flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryAdd(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            uint256 c = a + b;
+            if (c < a) return (false, 0);
+            return (true, c);
+        }
+    }
+
+    /**
+     * @dev Returns the substraction of two unsigned integers, with an overflow flag.
+     *
+     * _Available since v3.4._
+     */
+    function trySub(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            if (b > a) return (false, 0);
+            return (true, a - b);
+        }
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, with an overflow flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryMul(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+            // benefit is lost if 'b' is also tested.
+            // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+            if (a == 0) return (true, 0);
+            uint256 c = a * b;
+            if (c / a != b) return (false, 0);
+            return (true, c);
+        }
+    }
+
+    /**
+     * @dev Returns the division of two unsigned integers, with a division by zero flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryDiv(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            if (b == 0) return (false, 0);
+            return (true, a / b);
+        }
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers, with a division by zero flag.
+     *
+     * _Available since v3.4._
+     */
+    function tryMod(uint256 a, uint256 b) internal pure returns (bool, uint256) {
+        unchecked {
+            if (b == 0) return (false, 0);
+            return (true, a % b);
+        }
+    }
+
+    /**
+     * @dev Returns the addition of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `+` operator.
+     *
+     * Requirements:
+     *
+     * - Addition cannot overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a + b;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a - b;
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `*` operator.
+     *
+     * Requirements:
+     *
+     * - Multiplication cannot overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a * b;
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers, reverting on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator.
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a / b;
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * reverting when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        return a % b;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
+     * overflow (when the result is negative).
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {trySub}.
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        unchecked {
+            require(b <= a, errorMessage);
+            return a - b;
+        }
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers, reverting with custom message on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        unchecked {
+            require(b > 0, errorMessage);
+            return a / b;
+        }
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * reverting with custom message when dividing by zero.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {tryMod}.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        unchecked {
+            require(b > 0, errorMessage);
+            return a % b;
+        }
+    }
+}
+
+
 contract DrippStaking is Ownable {
     using SafeERC20 for IERC20;
 
     struct Dripp {
         address primaryToken;
         address lpToken;
-        uint256 rate;
+        uint256 activeTime;
         uint256 supply;
     }
 
     struct Account {
-        mapping(address => uint256) ghstStakingTokensAllowances;
         mapping(address => uint256) tokensStaked;
         mapping(address => uint256) liquidityTokensStaked;
         mapping(address => uint256) rewards;
@@ -518,9 +736,8 @@ contract DrippStaking is Ownable {
     }
 
     mapping(address => uint256) totalTokenStaked;
-    mapping(address => uint256) totalRewards;
     mapping(address => Account) accounts;
-    mapping(address => Dripp) dripps;
+    mapping(address => Dripp) public dripps;
     address[] allDripps;
 
     constructor(
@@ -613,6 +830,7 @@ contract DrippStaking is Ownable {
     function withdrawAllLiquidityStake(address token) external {
         updateRewards();
         uint256 bal = accounts[msg.sender].liquidityTokensStaked[token];
+
         require(bal != 0, "Cannot withdraw zero liquidity stake balance");
         accounts[msg.sender].liquidityTokensStaked[token] = 0;
         totalTokenStaked[token] -= bal;
@@ -635,17 +853,8 @@ contract DrippStaking is Ownable {
             "Start Dripp: Dripp must be active for some amount of time"
         );
         require(supply > 0, "Start Dripp: Supply must be greater than 0");
-        uint256 rate = setDrippRate(activeTime, supply);
-        dripps[token] = Dripp(primaryToken, lpToken, rate, supply);
+        dripps[token] = Dripp(primaryToken, lpToken, activeTime, supply);
         allDripps.push(token);
-    }
-
-    function setDrippRate(uint256 time, uint256 supply)
-        internal
-        pure
-        returns (uint256)
-    {
-        return supply / time;
     }
 
     /*
@@ -654,15 +863,15 @@ contract DrippStaking is Ownable {
     function reward(address _account, address token)
         public
         view
-        returns (uint256 reward_, uint256 rewardedTokens_)
+        returns (uint256 reward_)
     {
         Account storage account = accounts[_account];
+        DrippStaking oldStaking =
+            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
+
         // address(this) cannot underflow or overflow
-        require(
-            totalRewards[token] < dripps[token].supply,
-            "Maximum amount of rewards have been given out"
-        );
         uint256 timePeriod = block.timestamp - account.lastRewardUpdate;
+
         IERC20 drippToken = IERC20(token);
         require(
             drippToken.balanceOf(address(this)) > 0,
@@ -671,37 +880,35 @@ contract DrippStaking is Ownable {
         address primaryToken = dripps[token].primaryToken;
         address liquidityToken = dripps[token].lpToken;
         reward_ = account.rewards[token];
-        rewardedTokens_ = 0;
         if (totalTokenStaked[primaryToken] > 0) {
-            rewardedTokens_ +=
-                ((account.tokensStaked[primaryToken] /
-                    totalTokenStaked[primaryToken]) *
-                    dripps[token].rate *
-                    timePeriod) /
-                2;
+            uint256 totalAccountTokens =
+                oldStaking.accountTokenStaked(primaryToken, _account) +
+                    account.tokensStaked[primaryToken];
+            uint256 bothStakedTotal =
+                oldStaking.totalStaked(primaryToken) +
+                    totalTokenStaked[primaryToken];
+            reward_ +=
+                (totalAccountTokens * dripps[token].supply * timePeriod) /
+                (bothStakedTotal * dripps[token].activeTime * 2);
         }
         if (totalTokenStaked[liquidityToken] > 0) {
-            rewardedTokens_ +=
-                ((account.liquidityTokensStaked[liquidityToken] /
-                    totalTokenStaked[liquidityToken]) *
-                    dripps[token].rate *
-                    timePeriod) /
-                2;
-            if (
-                (totalRewards[token] + rewardedTokens_) > dripps[token].supply
-            ) {
-                rewardedTokens_ = dripps[token].supply - totalRewards[token];
-            }
-            reward_ = reward_ + rewardedTokens_;
+            uint256 totalAccountTokens =
+                oldStaking.accountLPStaked(liquidityToken, _account) +
+                    account.liquidityTokensStaked[liquidityToken];
+            uint256 bothStakedTotal =
+                oldStaking.totalStaked(liquidityToken) +
+                    totalTokenStaked[liquidityToken];
+
+            reward_ +=
+                (totalAccountTokens * dripps[token].supply * timePeriod) /
+                (bothStakedTotal * dripps[token].activeTime * 2);
         }
     }
 
     function updateRewards() internal {
         Account storage account = accounts[msg.sender];
         for (uint256 i = 0; i < allDripps.length; i++) {
-            (uint256 reward_, uint256 rewardedTokens_) =
-                reward(msg.sender, allDripps[i]);
-            totalRewards[allDripps[i]] += rewardedTokens_;
+            uint256 reward_ = reward(msg.sender, allDripps[i]);
             account.rewards[allDripps[i]] = reward_;
         }
         account.lastRewardUpdate = uint40(block.timestamp);
@@ -718,8 +925,9 @@ contract DrippStaking is Ownable {
             drippToken.balanceOf(address(this)) > account.rewards[token],
             "Claim: Contract has no tokens left"
         );
+        uint256 drippReward = account.rewards[token];
         account.rewards[token] = 0;
-        drippToken.safeTransfer(msg.sender, account.rewards[token]);
+        drippToken.safeTransfer(msg.sender, drippReward);
     }
 
     function accountTokenStaked(address token, address _account)
@@ -727,7 +935,11 @@ contract DrippStaking is Ownable {
         view
         returns (uint256)
     {
-        return accounts[_account].tokensStaked[token];
+        DrippStaking oldStaking =
+            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
+        return
+            accounts[_account].tokensStaked[token] +
+            oldStaking.accountLPStaked(token, _account);
     }
 
     function accountLPStaked(address token, address _account)
@@ -735,26 +947,38 @@ contract DrippStaking is Ownable {
         view
         returns (uint256)
     {
-        return accounts[_account].liquidityTokensStaked[token];
-    }
-
-    function drippRate(address token) external view returns (uint256) {
-        return dripps[token].rate;
+        DrippStaking oldStaking =
+            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
+        return
+            accounts[_account].liquidityTokensStaked[token] +
+            oldStaking.accountLPStaked(token, _account);
     }
 
     function totalStaked(address token) external view returns (uint256) {
-        return totalTokenStaked[token];
-    }
-
-    /*
-     *@notice get rewards for each dripp token
-     */
-    function totalRewarded(address token) external view returns (uint256) {
-        return totalRewards[token];
+        DrippStaking oldStaking =
+            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
+        return totalTokenStaked[token] + oldStaking.totalStaked(token);
     }
 
     function countDripps() external view returns (uint256) {
         return allDripps.length;
+    }
+
+    function getDripp(address token)
+        external
+        view
+        returns (
+            address primaryToken_,
+            address lpToken_,
+            uint256 activeTime_,
+            uint256 supply_
+        )
+    {
+        Dripp memory dripp = dripps[token];
+        primaryToken_ = dripp.primaryToken;
+        lpToken_ = dripp.lpToken;
+        activeTime_ = dripp.activeTime;
+        supply_ = dripp.supply;
     }
 }
 
