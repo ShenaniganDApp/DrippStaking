@@ -27,6 +27,9 @@ contract DrippStaking is Ownable {
     mapping(address => Dripp) public dripps;
     address[] allDripps;
 
+    DrippStaking oldStaking =
+        DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
+
     constructor(
         address[] memory token,
         address[] memory primaryToken,
@@ -117,7 +120,6 @@ contract DrippStaking is Ownable {
     function withdrawAllLiquidityStake(address token) external {
         updateRewards();
         uint256 bal = accounts[msg.sender].liquidityTokensStaked[token];
-
         require(bal != 0, "Cannot withdraw zero liquidity stake balance");
         accounts[msg.sender].liquidityTokensStaked[token] = 0;
         totalTokenStaked[token] -= bal;
@@ -140,8 +142,11 @@ contract DrippStaking is Ownable {
             "Start Dripp: Dripp must be active for some amount of time"
         );
         require(supply > 0, "Start Dripp: Supply must be greater than 0");
+        if (dripps[token].activeTime != 0) {
+            //check exist
+            allDripps.push(token);
+        }
         dripps[token] = Dripp(primaryToken, lpToken, activeTime, supply);
-        allDripps.push(token);
     }
 
     /*
@@ -153,17 +158,14 @@ contract DrippStaking is Ownable {
         returns (uint256 reward_)
     {
         Account storage account = accounts[_account];
-        DrippStaking oldStaking =
-            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
 
-        // address(this) cannot underflow or overflow
         uint256 timePeriod = block.timestamp - account.lastRewardUpdate;
 
         IERC20 drippToken = IERC20(token);
-        require(
-            drippToken.balanceOf(address(this)) > 0,
-            "address(this) contracts has no more of address(this) Dripp"
-        );
+        // require(
+        //     drippToken.balanceOf(address(this)) > 0,
+        //     "address(this) contracts has no more of address(this) Dripp"
+        // );
         address primaryToken = dripps[token].primaryToken;
         address liquidityToken = dripps[token].lpToken;
         reward_ = account.rewards[token];
@@ -175,8 +177,8 @@ contract DrippStaking is Ownable {
                 oldStaking.totalStaked(primaryToken) +
                     totalTokenStaked[primaryToken];
             reward_ +=
-                (totalAccountTokens * dripps[token].supply * timePeriod) /
-                (bothStakedTotal * dripps[token].activeTime * 2);
+                (totalAccountTokens * dripps[token].supply * timePeriod * 4) /
+                (bothStakedTotal * dripps[token].activeTime * 10);
         }
         if (totalTokenStaked[liquidityToken] > 0) {
             uint256 totalAccountTokens =
@@ -187,8 +189,8 @@ contract DrippStaking is Ownable {
                     totalTokenStaked[liquidityToken];
 
             reward_ +=
-                (totalAccountTokens * dripps[token].supply * timePeriod) /
-                (bothStakedTotal * dripps[token].activeTime * 2);
+                (totalAccountTokens * dripps[token].supply * timePeriod * 6) /
+                (bothStakedTotal * dripps[token].activeTime * 10);
         }
     }
 
@@ -196,6 +198,7 @@ contract DrippStaking is Ownable {
         Account storage account = accounts[msg.sender];
         for (uint256 i = 0; i < allDripps.length; i++) {
             uint256 reward_ = reward(msg.sender, allDripps[i]);
+            // address(this) cannot underflow or overflow
             account.rewards[allDripps[i]] = reward_;
         }
         account.lastRewardUpdate = uint40(block.timestamp);
@@ -222,11 +225,7 @@ contract DrippStaking is Ownable {
         view
         returns (uint256)
     {
-        DrippStaking oldStaking =
-            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
-        return
-            accounts[_account].tokensStaked[token] +
-            oldStaking.accountLPStaked(token, _account);
+        return accounts[_account].tokensStaked[token];
     }
 
     function accountLPStaked(address token, address _account)
@@ -234,17 +233,11 @@ contract DrippStaking is Ownable {
         view
         returns (uint256)
     {
-        DrippStaking oldStaking =
-            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
-        return
-            accounts[_account].liquidityTokensStaked[token] +
-            oldStaking.accountLPStaked(token, _account);
+        return accounts[_account].liquidityTokensStaked[token];
     }
 
     function totalStaked(address token) external view returns (uint256) {
-        DrippStaking oldStaking =
-            DrippStaking(address(0xb8432d4c985c1a17A50cE0676B97DBd157737c37));
-        return totalTokenStaked[token] + oldStaking.totalStaked(token);
+        return totalTokenStaked[token];
     }
 
     function countDripps() external view returns (uint256) {
