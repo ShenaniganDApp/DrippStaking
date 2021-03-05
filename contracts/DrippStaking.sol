@@ -19,12 +19,16 @@ contract DrippStaking is Ownable {
         mapping(address => uint256) tokensStaked;
         mapping(address => uint256) liquidityTokensStaked;
         mapping(address => uint256) rewards;
+        bool timestampFix;
         uint256 lastRewardUpdate;
     }
 
     mapping(address => uint256) totalTokenStaked;
     mapping(address => Account) accounts;
     mapping(address => Dripp) public dripps;
+
+    uint256 deployTimestamp;
+
     address[] allDripps;
 
     DrippStaking oldStaking =
@@ -46,6 +50,7 @@ contract DrippStaking is Ownable {
                 supply[i]
             );
         }
+        deployTimestamp = block.timestamp;
     }
 
     /*
@@ -158,8 +163,12 @@ contract DrippStaking is Ownable {
         returns (uint256 reward_)
     {
         Account storage account = accounts[_account];
-
-        uint256 timePeriod = block.timestamp - account.lastRewardUpdate;
+        uint256 timePeriod;
+        if (!account.timestampFix) {
+            timePeriod = block.timestamp - deployTimestamp;
+        } else {
+            timePeriod = block.timestamp - account.lastRewardUpdate;
+        }
 
         IERC20 drippToken = IERC20(token);
         // require(
@@ -169,28 +178,30 @@ contract DrippStaking is Ownable {
         address primaryToken = dripps[token].primaryToken;
         address liquidityToken = dripps[token].lpToken;
         reward_ = account.rewards[token];
-        if (totalTokenStaked[primaryToken] > 0) {
+        uint256 bothStakedTokenTotal =
+            oldStaking.totalStaked(primaryToken) +
+                totalTokenStaked[primaryToken];
+        uint256 bothStakedLPTotal =
+            oldStaking.totalStaked(liquidityToken) +
+                totalTokenStaked[liquidityToken];
+        if (bothStakedTokenTotal > 0) {
             uint256 totalAccountTokens =
                 oldStaking.accountTokenStaked(primaryToken, _account) +
                     account.tokensStaked[primaryToken];
-            uint256 bothStakedTotal =
-                oldStaking.totalStaked(primaryToken) +
-                    totalTokenStaked[primaryToken];
             reward_ +=
-                (totalAccountTokens * dripps[token].supply * timePeriod * 4) /
-                (bothStakedTotal * dripps[token].activeTime * 10);
+                (((totalAccountTokens * dripps[token].supply) * timePeriod) *
+                    4) /
+                ((bothStakedTokenTotal * dripps[token].activeTime) * 10);
         }
-        if (totalTokenStaked[liquidityToken] > 0) {
+        if (bothStakedLPTotal > 0) {
             uint256 totalAccountTokens =
                 oldStaking.accountLPStaked(liquidityToken, _account) +
                     account.liquidityTokensStaked[liquidityToken];
-            uint256 bothStakedTotal =
-                oldStaking.totalStaked(liquidityToken) +
-                    totalTokenStaked[liquidityToken];
 
             reward_ +=
-                (totalAccountTokens * dripps[token].supply * timePeriod * 6) /
-                (bothStakedTotal * dripps[token].activeTime * 10);
+                (((totalAccountTokens * dripps[token].supply) * timePeriod) *
+                    6) /
+                ((bothStakedLPTotal * dripps[token].activeTime) * 10);
         }
     }
 
@@ -198,10 +209,12 @@ contract DrippStaking is Ownable {
         Account storage account = accounts[msg.sender];
         for (uint256 i = 0; i < allDripps.length; i++) {
             uint256 reward_ = reward(msg.sender, allDripps[i]);
-            // address(this) cannot underflow or overflow
             account.rewards[allDripps[i]] = reward_;
         }
         account.lastRewardUpdate = uint40(block.timestamp);
+        if (!account.timestampFix) {
+            account.timestampFix = true;
+        }
     }
 
     /*
